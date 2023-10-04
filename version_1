@@ -43,6 +43,8 @@ minus_sign = pygame.image.load("minus_sign.png")
 minus_sign = pygame.transform.scale(minus_sign, (50, 50))
 minus_sign_x = 25
 minus_sign_y = 100
+clicks = 0
+button_clicked = False
 
 while True:
     screen.fill(colour)
@@ -53,7 +55,11 @@ while True:
             if event.button == 1:
                 if current_screen == 0 and 5 <= event.pos[0] <= 5 + menu_text.get_width() and 250 <= event.pos[1] <= 250 + menu_text.get_height():
                     current_screen = 1
-    
+                elif current_screen == 1 and 175 <= event.pos[0] <= 175 + plus_sign.get_width() and 100 <= event.pos[1] <= 100 + plus_sign.get_height():
+                    workout_time += 30
+                elif current_screen == 1 and 25 <= event.pos[0] <= 25 + minus_sign.get_width() and 100 <= event.pos[1] <= 100 + minus_sign.get_height():
+                    workout_time -= 30
+
     if current_screen == 0:
         # screen.blit(main_menu, (main_menu_x, main_menu_y))
         screen.blit(menu_text,(5, 250) )
@@ -62,12 +68,6 @@ while True:
         screen.blit(plus_sign, (plus_sign_x, plus_sign_y))
         screen.blit(minus_sign, (minus_sign_x, minus_sign_y))
 
-        if event.type == MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if current_screen == 1 and 175 <= event.pos[0] <= 175 + plus_sign.get_width() and 100 <= event.pos[1] <= 100 + plus_sign.get_height():
-                    elapsed_time += 5
-
-    
     if current_screen == 2:
         punch = random.randint(1,6)
         text = font.render(str(punch) , True, (0, 0, 0))
@@ -75,7 +75,7 @@ while True:
         # print(punch)
         pygame.time.delay(1000)
         elapsed_time += 1 
-        if elapsed_time == 5:
+        if elapsed_time == workout_time:
             break
             
         # if not played_mp3:
@@ -87,8 +87,9 @@ while True:
         #     pygame.mixer.music.play()
         #     played_mp3 = True 
         
-
-    print(elapsed_time)
+    
+    # print(elapsed_time)
+    print(workout_time)
     # print(punch)
     pygame.display.flip()
 pygame.quit()
